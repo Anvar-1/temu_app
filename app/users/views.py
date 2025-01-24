@@ -54,6 +54,7 @@ class UserLogoutView(generics.GenericAPIView):
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserUpdateSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
         return self.get_queryset().get(phone=self.request.user.phone)

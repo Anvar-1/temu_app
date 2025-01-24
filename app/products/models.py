@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Subcategory(models.Model):
     name = models.CharField(max_length=100)
     category = models.ForeignKey('Category', related_name='subcategories_set', on_delete=models.CASCADE)  # o'zgartirdik
@@ -27,7 +28,13 @@ class Product(models.Model):
     comment = models.TextField(blank=True)
     like = models.PositiveIntegerField(default=0)
     aksiya = models.BooleanField(default=False)
+    sold_quantity = models.PositiveIntegerField(default=0)
+    available_quantity = models.PositiveIntegerField(default=0)
+    likes = models.ManyToManyField('users.User', related_name='liked_products', blank=True)
     subcategory = models.ForeignKey(Subcategory, related_name='products', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
+
+    def total_likes(self):
+        return self.likes.count()
